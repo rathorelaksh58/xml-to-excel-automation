@@ -2,16 +2,17 @@ import os
 import xml.etree.ElementTree as ET
 import pandas as pd
 
-# 👉 Apna folder path yahan daal
+# Set the folder path containing XML files
 folder_path = r"C:\Users\AGRA_ANA\Downloads\XML_4_2026_1777278684\XML_4_2026\ALL_METER"
 
 data = []
 
+# Iterate through all files in the directory
 for file in os.listdir(folder_path):
-    # 👉 .xml / .XML dono handle karega
+    # Process only XML files and ignore temporary files
     if file.lower().endswith(".xml") and not file.startswith("~"):
         file_path = os.path.join(folder_path, file)
-        
+
         try:
             tree = ET.parse(file_path)
             root = tree.getroot()
@@ -29,13 +30,13 @@ for file in os.listdir(folder_path):
             })
 
         except Exception as e:
-            print(f"❌ Error in file {file}: {e}")
+            print(f"Error processing file {file}: {e}")
 
-# 👉 Excel file bana do
+# Create DataFrame and export to Excel
 output_file = os.path.join(folder_path, "output.xlsx")
 
 df = pd.DataFrame(data)
 df.to_excel(output_file, index=False)
 
-print("✅ Done bhai! Excel yahan bani hai:")
+print("Excel file has been created at:")
 print(output_file)
